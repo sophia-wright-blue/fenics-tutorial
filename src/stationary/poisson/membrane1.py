@@ -7,6 +7,7 @@ with w = 0 on the boundary.
 from __future__ import print_function
 from dolfin import *
 import numpy
+import mshr
 
 # This demo needs to be updated for the removal
 # of CircleMesh from DOLFIN
@@ -22,7 +23,13 @@ y0 = 0.6*R*sin(theta)
 sigma = 0.025
 #sigma = 50  # large value for verification
 n = 40   # approx no of elements in radial direction
-mesh = CircleMesh(Point(0.0, 0.0), 1.0, 1.0/n)
+
+# create circular mesh using mshr
+center = dolfin.Point()
+circle = mshr.Circle(center, 1.0)
+mesh = mshr.generate_mesh(circle, n)
+
+#mesh = CircleMesh(Point(0.0, 0.0), 1.0, 1.0/n)
 V = FunctionSpace(mesh, 'Lagrange', 1)
 
 # Define boundary condition w=0
